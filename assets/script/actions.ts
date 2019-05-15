@@ -1,0 +1,10 @@
+export const SHOW_HOME = 'show:home';
+export const SHOW_ENTRANCE = 'show:entrance';
+export const SHOW_MENU = 'show:menu';
+export const SHOW_GAME_1 = 'show:game:1';
+export const SHOW_GAME_2 = 'show:game:2';
+export const SHOW_GAME_3 = 'show:game:3';
+export const FINISH_GAME_1 = 'finish:game:1';
+export const FINISH_GAME_2 = 'finish:game:2';
+export const FINISH_GAME_3 = 'finish:game:3';
+export const START_DRAWING = 'start:drawing';
