@@ -2781,7 +2781,7 @@ declare namespace cc {
 		!#zh 分发事件到事件流中。
 		@param event The Event object that is dispatched into the event flow 
 		*/
-		dispatchEvent(event: Event): void;		
+		dispatchEvent(event: Event, args?: any): void;		
 		/**
 		!#en Pause node related system events registered with the current Node. Node system events includes touch and mouse events.
 		If recursive is set to true, then this API will pause the node system events for the node and all nodes in its sub node tree.

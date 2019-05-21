@@ -3,8 +3,6 @@ import { SHOW_HOME, SHOW_MENU, FINISH_GAME_3 } from "../actions";
 const { Component, Node, Event, Graphics, Color, instantiate, loader, sequence, delayTime, fadeIn, fadeOut } = cc;
 const { ccclass } = cc._decorator;
 
-const FinishGame3Action = new Event.EventCustom(FINISH_GAME_3, true);
-
 @ccclass
 export default class Game3 extends Component {
 
@@ -65,7 +63,9 @@ export default class Game3 extends Component {
 
                             this.selections.push({ from: i, to: this.places[i].target });
                             if (this.selections.length === 4) {
-                                this.node.dispatchEvent(FinishGame3Action);
+                                const finishGame3Action = new Event.EventCustom(FINISH_GAME_3, true);
+                                finishGame3Action.setUserData(this.selections);
+                                this.node.dispatchEvent(finishGame3Action);
                             }
 
                             this.places[i].touched = true;

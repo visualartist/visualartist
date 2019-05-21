@@ -1,9 +1,7 @@
 import { SHOW_HOME, SHOW_MENU, FINISH_GAME_2 } from "../actions";
 
-const { Component, Node, Event, loader, instantiate } = cc;
+const { Color, Component, Node, Event, Label, loader, instantiate } = cc;
 const { ccclass } = cc._decorator;
-
-const FinishGame2Action = new Event.EventCustom(FINISH_GAME_2, true);
 
 @ccclass
 export default class Game2 extends Component {
@@ -19,25 +17,40 @@ export default class Game2 extends Component {
         this.loadCard().then((node1: cc.Node) => {
             this.loadCardBack().then((node2: cc.Node) => {
                 for (let i = 0; i < 16; i ++) {
-                    const cardBack = instantiate(node2);
-                    
                     const x = 80 + 106 * (i % 8);
                     const y = 400 - 160 * Math.floor(i / 8);
+
+                    const cardBack = instantiate(node2);
+                    
                     const flipCard = () => {
                         if (this.selections.length > 4) {
                             return;
                         }
 
-                        const card = instantiate(node1);
+                        // const label = new cc.Node('Label') as any;
+                        // label.string = i;
+                        // label.color = Color.BLACK;
+                        // label.fontSize = 12;
+                        // label.horizontalAlign = Label.HorizontalAlign.CENTER;
+                        // label.verticalAlign = Label.VerticalAlign.CENTER;
+                        // label.width = 160;
+                        // label.height = 272;
+                        // label.x = x;
+                        // label.y = y;
+                        // label.enableWrapText = true;
 
+                        const card = instantiate(node1);
                         card.x = x;
                         card.y = y;
+                        // label.parent = card;
 
                         this.node.addChild(card);
 
                         this.selections.push(i);
                         if (this.selections.length === 5) {
-                            this.node.dispatchEvent(FinishGame2Action);
+                            const finishGame2Action = new Event.EventCustom(FINISH_GAME_2, true);
+                            finishGame2Action.setUserData(this.selections.map((selection, index) => ({ v1: index, v2: selection })));
+                            this.node.dispatchEvent(finishGame2Action);
                         }
 
                         cardBack.off(Node.EventType.TOUCH_START, flipCard);

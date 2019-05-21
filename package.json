@@ -1,0 +1,25 @@
+{
+  "name": "visual-artist",
+  "version": "1.0.0",
+  "description": "Hello world new project template.",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "qiniu-js": "^2.5.4",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/visualartist/visualartist.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/visualartist/visualartist/issues"
+  },
+  "homepage": "https://github.com/visualartist/visualartist#readme"
+}

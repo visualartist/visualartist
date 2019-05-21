@@ -1,9 +1,7 @@
 import { SHOW_HOME, SHOW_MENU, FINISH_GAME_1 } from "../actions";
 
-const { Component, Node, Event, loader, instantiate, sequence, fadeIn, fadeOut } = cc;
+const { Color, Component, Label, Node, Event, loader, instantiate, sequence, fadeIn, fadeOut } = cc;
 const { ccclass } = cc._decorator;
-
-const FinishGame1Action = new Event.EventCustom(FINISH_GAME_1, true);
 
 @ccclass
 export default class Game1 extends Component {
@@ -23,7 +21,26 @@ export default class Game1 extends Component {
                     const x = 60 + 100 * (i % 9);
                     const y = 240 - 100 * Math.floor(i / 9);
 
-                    const clickButton = () => {
+                    // const label = new cc.Node('Label') as any;
+                    // label.string = i;
+                    // label.color = Color.WHITE;
+                    // label.fontSize = 12;
+                    // label.horizontalAlign = Label.HorizontalAlign.CENTER;
+                    // label.verticalAlign = Label.VerticalAlign.CENTER;
+                    // label.width = 160;
+                    // label.height = 160;
+                    // label.x = x;
+                    // label.y = y;
+                    // label.enableWrapText = true;
+
+                    const button = instantiate(node2);
+                    button.x = x;
+                    button.y = y;
+                    // label.parent = button;
+
+                    const handleClick = () => {
+                        button.opacity = 127;
+                        button.off(Node.EventType.TOUCH_START, handleClick);
                         if (this.selections.length > 17) {
                             return;
                         }
@@ -50,17 +67,14 @@ export default class Game1 extends Component {
                             this.renderSelections();
 
                             if (this.selections.length === 18) {
-                                this.node.dispatchEvent(FinishGame1Action);
+                                const finishGame1Action = new Event.EventCustom(FINISH_GAME_1, true);
+                                finishGame1Action.setUserData(this.selections.map((selection, index) => ({ v1: index, v2: selection.serial })));
+                                this.node.dispatchEvent(finishGame1Action);
                             }
                         }, this.duration * 2000);
                     }
 
-                    const button = instantiate(node2);
-
-                    button.x = x;
-                    button.y = y;
-
-                    button.on(Node.EventType.TOUCH_START, clickButton);
+                    button.on(Node.EventType.TOUCH_START, handleClick);
         
                     this.node.addChild(button);
                 }
