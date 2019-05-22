@@ -21,22 +21,22 @@ export default class Game1 extends Component {
                     const x = 60 + 100 * (i % 9);
                     const y = 240 - 100 * Math.floor(i / 9);
 
-                    // const label = new cc.Node('Label') as any;
-                    // label.string = i;
-                    // label.color = Color.WHITE;
-                    // label.fontSize = 12;
-                    // label.horizontalAlign = Label.HorizontalAlign.CENTER;
-                    // label.verticalAlign = Label.VerticalAlign.CENTER;
-                    // label.width = 160;
-                    // label.height = 160;
-                    // label.x = x;
-                    // label.y = y;
-                    // label.enableWrapText = true;
+                    const label = new cc.Node('Label') as any;
+                    label.string = i;
+                    label.color = Color.WHITE;
+                    label.fontSize = 12;
+                    label.horizontalAlign = Label.HorizontalAlign.CENTER;
+                    label.verticalAlign = Label.VerticalAlign.CENTER;
+                    label.width = 160;
+                    label.height = 160;
+                    label.x = x;
+                    label.y = y;
+                    label.enableWrapText = true;
 
                     const button = instantiate(node2);
                     button.x = x;
                     button.y = y;
-                    // label.parent = button;
+                    label.parent = button;
 
                     const handleClick = () => {
                         button.opacity = 127;

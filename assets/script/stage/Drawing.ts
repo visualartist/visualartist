@@ -9,7 +9,6 @@ const { Component, Event } = cc;
 
 const StartDrawingAction = new Event.EventCustom(START_DRAWING, true);
 
-
 enum GameType {
     Game1 = 1,
     Game2 = 2,
@@ -38,7 +37,7 @@ export default class Drawing extends Component {
         const str = this.generateGcode(type, e.detail);
         const file = new Blob([str], { type: 'text/plain' });
         const key = uuid();
-        axios.get('http://localhost:3000/qiniu/token').then(({ data }) => {
+        axios.get('http://129.211.27.21:3000/qiniu/token').then(({ data }) => {
             const { token } = data as any;
             qiniu.upload(file, key + '.gcode', token, {}, {}).subscribe({
                 next() {},
@@ -93,12 +92,23 @@ export default class Drawing extends Component {
     // data 是一个数组，形如：[{ v1: 0, v2: 2}]，Game1就是随便乱画
     drawGame2(data: any) {
         console.log(data);
-        return this.drawConcentricCircle(50, 50, 40, 1);
+        return this.drawConcentricCircle(150, 150, 40, 1);
     }
 
     drawGame3(data: any) {
-        console.log(data);
-        return '';
+        return this.drawBone();
+    }
+
+    drawBone() {
+        let result = '';
+        let originalX = 50;
+        let originalY = 50;
+        for (let i = 0; i < 5; i ++) {
+            const currentX = originalX + i * 10;
+            const currentY = originalY + 50 * Math.random();
+            result += this.drawLine(currentX, originalY, currentX, originalY + currentY);
+        }
+        return result;
     }
 
     drawConcentricCircle = (x: number, y: number, r: number, mode: number) => {
@@ -109,7 +119,7 @@ export default class Drawing extends Component {
             result += this.drawCircle(x, y - r, x + r, y, 0, r, mode);
         }
         if (r > 10) {
-            result += this.drawConcentricCircle(x, y, r - 10, (mode + 1) % 1);
+            result += this.drawConcentricCircle(x, y, r - 10, (mode + 1) % 2);
             r = r - 10;
         }
         return result;
@@ -121,7 +131,7 @@ G1 Z50 F3000
 G1 X${x} Y${y} F3000
 G1 Z5 F1500
 ${mode ? 'G2' : 'G3'} X${toX} Y${toY} I${circleX} J${circleY} F1500
-        `;
+`;
     }
     
     drawLine = (x, y, toX, toY) => {
@@ -130,7 +140,7 @@ G1 Z50 F3000
 G1 X${x} Y${y} F3000
 G1 Z5 F1500
 G1 X${toX} Y${toY} F1500
-    `;
+`;
     }
 
     header = `
