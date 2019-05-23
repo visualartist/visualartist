@@ -60,7 +60,6 @@ export default class Drawing extends Component {
     };
 
     generateGcode = (type: GameType, data: any) => {
-        console.log()
         let body = '';
         switch (type) {
             case GameType.Game1:
@@ -78,35 +77,47 @@ export default class Drawing extends Component {
         return this.header + body + this.footer;
     };
 
+    // 面板长度限制：40 - 220
     // data 是一个数组，形如：[{ v1: 0, v2: 2}]，Game1就是随便乱画
     drawGame1(data: any) {
+        console.log('game1');
+        console.log(data);
+        // 面板 长度 200 宽度 200
+        // data 是长度为 18 的数组
         return data.map((item: any) => {
-            const fromX = 50 + Math.random() * 50 + item.v1 * Math.random();
-            const fromY = 50 + Math.random() * 50 + item.v2 * Math.random();
-            const toX = 50 + Math.random() * 50 + item.v1 * Math.random();
-            const toY = 50 + Math.random() * 50 + item.v2 * Math.random();
+            const fromX = 60 + Math.random() * 160 + item.v1 * Math.random();
+            const fromY = 60 + Math.random() * 160 + item.v2 * Math.random();
+            const toX = 60 + Math.random() * 160 + item.v1 * Math.random();
+            const toY = 60 + Math.random() * 160 + item.v2 * Math.random();
             return this.drawLine(fromX, fromY, toX, toY);
         });
     }
 
     // data 是一个数组，形如：[{ v1: 0, v2: 2}]，Game1就是随便乱画
     drawGame2(data: any) {
+        console.log('game2');
         console.log(data);
-        return this.drawConcentricCircle(150, 150, 40, 1);
+        return data.map((item: any, index: number) => {
+            const r = 20 * (index + 1);
+            const x = 60 + r + item.v1 / 5 * (240 - 2 * r);
+            const y = 60 + r + item.v2 / 16 * (240 - 2 * r);
+            return this.drawConcentricCircle(x, y, r, 1);
+        })
     }
 
     drawGame3(data: any) {
-        return this.drawBone();
+        // data 是长度为 4 的数组
+        return this.drawBone(data);
     }
 
-    drawBone() {
+    drawBone(data: any) {
         let result = '';
-        let originalX = 50;
-        let originalY = 50;
-        for (let i = 0; i < 5; i ++) {
+        let originalX = 60;
+        let originalY = 150;
+        for (let i = 0; i < 18; i ++) {
             const currentX = originalX + i * 10;
-            const currentY = originalY + 50 * Math.random();
-            result += this.drawLine(currentX, originalY, currentX, originalY + currentY);
+            const currentY = originalY + 160 * (Math.random() - 0.5);
+            result += this.drawLine(currentX, originalY, currentX, currentY);
         }
         return result;
     }
@@ -148,5 +159,6 @@ G21 ; set units to millimeters
 `;
 
     footer = `
+G1 Z50 F3000
 `;
 }
