@@ -27,7 +27,6 @@ export default class LeadArtist extends Component {
 
     // Methods
     showEntrance = () => {
-        console.log('entrance');
         this.node.off(Node.EventType.TOUCH_START, this.showEntrance, this, true);
         this.node.on(Node.EventType.TOUCH_START, this.showHome, this, true);
         this.node.dispatchEvent(ShowEntranceAction);

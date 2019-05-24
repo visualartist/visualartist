@@ -7,8 +7,6 @@ import { SHOW_HOME, SHOW_MENU, START_DRAWING, FINISH_GAME_1, FINISH_GAME_2, FINI
 const { ccclass } = cc._decorator;
 const { Component, Event } = cc;
 
-const StartDrawingAction = new Event.EventCustom(START_DRAWING, true);
-
 enum GameType {
     Game1 = 1,
     Game2 = 2,
@@ -33,7 +31,9 @@ export default class Drawing extends Component {
     };
 
     startDrawing = (type: GameType) => (e: any) => {
-        this.node.dispatchEvent(StartDrawingAction);
+        const startDrawingAction = new Event.EventCustom(START_DRAWING, true);
+        startDrawingAction.setUserData(e.detail);
+        this.node.dispatchEvent(startDrawingAction);
         const str = this.generateGcode(type, e.detail);
         const file = new Blob([str], { type: 'text/plain' });
         const key = uuid();
@@ -80,8 +80,6 @@ export default class Drawing extends Component {
     // 面板长度限制：40 - 220
     // data 是一个数组，形如：[{ v1: 0, v2: 2}]，Game1就是随便乱画
     drawGame1(data: any) {
-        console.log('game1');
-        console.log(data);
         // 面板 长度 200 宽度 200
         // data 是长度为 18 的数组
         return data.map((item: any) => {
@@ -95,14 +93,12 @@ export default class Drawing extends Component {
 
     // data 是一个数组，形如：[{ v1: 0, v2: 2}]，Game1就是随便乱画
     drawGame2(data: any) {
-        console.log('game2');
-        console.log(data);
         return data.map((item: any, index: number) => {
             const r = 20 * (index + 1);
             const x = 60 + r + item.v1 / 5 * (240 - 2 * r);
             const y = 60 + r + item.v2 / 16 * (240 - 2 * r);
             return this.drawConcentricCircle(x, y, r, 1);
-        })
+        });
     }
 
     drawGame3(data: any) {

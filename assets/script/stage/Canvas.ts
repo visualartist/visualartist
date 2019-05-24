@@ -74,10 +74,10 @@ export default class Canvas extends cc.Component {
             this.node.children.forEach(child => child.emit(FINISH_GAME_3, e));
         });
 
-        this.node.on(START_DRAWING, () => {
-            this.node.children.forEach(child => child.emit(START_DRAWING));
+        this.node.on(START_DRAWING, e => {
             // Active Popover
             this.node.getChildByName('Popover').active = true;
+            this.node.children.forEach(child => child.emit(START_DRAWING, e));
         });
     }
 }
