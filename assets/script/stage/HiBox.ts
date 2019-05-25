@@ -45,9 +45,9 @@ const MenuProps = {
 export default class HiBox extends Component {
     private rect: any = {};
 
-    private duration = 0.25;
+    private duration: number = 0.25;
 
-    private nextTick = 0;
+    private nextTick: any = 0;
 
     onLoad () {
     }

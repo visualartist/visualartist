@@ -2,10 +2,10 @@ import * as qiniu from 'qiniu-js';
 import * as uuid from 'uuid/v4';
 import axios from 'axios';
 
-import { SHOW_HOME, SHOW_MENU, START_DRAWING, FINISH_GAME_1, FINISH_GAME_2, FINISH_GAME_3 } from '../actions';
+import { SHOW_HOME, SHOW_MENU, START_DRAWING, FINISH_GAME_1, FINISH_GAME_2, FINISH_GAME_3, SHOW_ENTRANCE } from '../actions';
 
 const { ccclass } = cc._decorator;
-const { Component, Event } = cc;
+const { Component, Node, Event } = cc;
 
 enum GameType {
     Game1 = 1,
@@ -15,27 +15,40 @@ enum GameType {
 
 @ccclass
 export default class Drawing extends Component {
+    private gcode: string = '';
+    private payload: any = [];
+
     start () {
         this.node.on(SHOW_HOME, this.handleDisable);
+        this.node.on(SHOW_ENTRANCE, this.handleDisable);
         this.node.on(SHOW_MENU, this.handleDisable);
     }
 
     onEnable = () => {
-        this.node.on(FINISH_GAME_1, this.startDrawing(GameType.Game1));
-        this.node.on(FINISH_GAME_2, this.startDrawing(GameType.Game2));
-        this.node.on(FINISH_GAME_3, this.startDrawing(GameType.Game3));
+        this.node.on(FINISH_GAME_1, this.handleDataRecord(GameType.Game1));
+        this.node.on(FINISH_GAME_2, this.handleDataRecord(GameType.Game2));
+        this.node.on(FINISH_GAME_3, this.handleDataRecord(GameType.Game3));
+        this.node.on(Node.EventType.TOUCH_START, this.startDrawing);
     }
 
     handleDisable = () => {
+        this.node.off(FINISH_GAME_1, this.handleDataRecord(GameType.Game1));
+        this.node.off(FINISH_GAME_2, this.handleDataRecord(GameType.Game2));
+        this.node.off(FINISH_GAME_3, this.handleDataRecord(GameType.Game3));
+        this.node.off(Node.EventType.TOUCH_START, this.startDrawing);
         this.node.active = false;
     };
 
-    startDrawing = (type: GameType) => (e: any) => {
+    handleDataRecord = (type: GameType) => (e: any) => {
+        this.payload = e.detail;
+        this.gcode = this.generateGcode(type, e.detail);
+    };
+
+    startDrawing = () => {
         const startDrawingAction = new Event.EventCustom(START_DRAWING, true);
-        startDrawingAction.setUserData(e.detail);
+        startDrawingAction.setUserData(this.payload);
         this.node.dispatchEvent(startDrawingAction);
-        const str = this.generateGcode(type, e.detail);
-        const file = new Blob([str], { type: 'text/plain' });
+        const file = new Blob([this.gcode], { type: 'text/plain' });
         const key = uuid();
         axios.get('http://129.211.27.21:3000/qiniu/token').then(({ data }) => {
             const { token } = data as any;

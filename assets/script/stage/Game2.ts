@@ -5,6 +5,7 @@ const { ccclass } = cc._decorator;
 
 @ccclass
 export default class Game2 extends Component {
+    private temps = [];
 
     private selections = [];
 
@@ -45,6 +46,7 @@ export default class Game2 extends Component {
                         // label.parent = card;
 
                         this.node.addChild(card);
+                        this.temps.push(card);
 
                         this.selections.push(i);
                         if (this.selections.length === 5) {
@@ -62,15 +64,19 @@ export default class Game2 extends Component {
                     cardBack.on(Node.EventType.TOUCH_START, flipCard);
     
                     this.node.addChild(cardBack);
+                    this.temps.push(cardBack);
                 }
             });
         })
     }
 
     handleDisable = () => {
+        this.temps.forEach(temp => {
+            this.node.removeChild(temp);
+        });
+        this.temps = [];
+        this.selections = [];
         this.node.active = false;
-        this.node.off(SHOW_HOME, this.handleDisable);
-        this.node.off(SHOW_MENU, this.handleDisable);
     };
 
     loadCard = () => new Promise((resolve, reject) => {

@@ -9,9 +9,9 @@ const ShowMenuAction = new Event.EventCustom(SHOW_MENU, true);
 export default class CreateBox extends Component {
     private rect: any = {};
 
-    private duration = 0.25;
+    private duration: number = 0.25;
 
-    private nextTick = 0;
+    private nextTick: any = 0;
 
     start () {
         this.observeRect();
@@ -31,12 +31,12 @@ export default class CreateBox extends Component {
     }
 
     showMenu = () => {
-        // fade out
-        this.node.active = false;
         // broadcast game starting
         this.node.dispatchEvent(ShowMenuAction);
         // unbind listener
         this.node.getChildByName('Mask').off(Node.EventType.TOUCH_START, this.showMenu, this, true);
+        // fade out
+        this.node.active = false;
     };
 
     handleHome = () => {

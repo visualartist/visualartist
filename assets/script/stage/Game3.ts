@@ -5,6 +5,7 @@ const { ccclass } = cc._decorator;
 
 @ccclass
 export default class Game3 extends Component {
+    private temps = [];
 
     private selections = [];
 
@@ -96,18 +97,18 @@ export default class Game3 extends Component {
                 ball.on(Node.EventType.TOUCH_END, putBall);
 
                 this.node.addChild(ball);
+                this.temps.push(ball);
             }
         });
     }
 
-    onDisable() {
-
-    }
-
     handleDisable = () => {
+        this.temps.forEach(temp => {
+            this.node.removeChild(temp);
+        });
+        this.temps = [];
+        this.selections = [];
         this.node.active = false;
-        this.node.off(SHOW_HOME, this.handleDisable);
-        this.node.off(SHOW_MENU, this.handleDisable);
     }
 
     loadBall = () => new Promise((resolve, reject) => {

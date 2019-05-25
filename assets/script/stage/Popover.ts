@@ -13,6 +13,7 @@ export default class Popover extends Component {
     }
 
     open = (e: any) => {
+        console.log(e);
         const str = e.detail.reduce((str, data) => str = str + data.v1 + data.v2, '').substring(0, 8);
         (this.node.getChildByName('Label') as any).getComponent(cc.Label).string = str;
     }
