@@ -3828,7 +3828,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 10.66,
+      "width": 21.31,
       "height": 40
     },
     "_anchorPoint": {
@@ -3839,13 +3839,13 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 180,
+      "y": 40,
       "z": 0
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 2,
-      "y": 2,
+      "x": 0.5,
+      "y": 0.5,
       "z": 1
     },
     "_rotationX": 0,
@@ -3873,7 +3873,7 @@
     "_useOriginalSize": false,
     "_string": "--",
     "_N$string": "--",
-    "_fontSize": 16,
+    "_fontSize": 32,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
