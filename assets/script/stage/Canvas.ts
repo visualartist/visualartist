@@ -38,6 +38,7 @@ export default class Canvas extends cc.Component {
             // Active Menu
             this.node.getChildByName('BackBox').active = true;
             this.node.getChildByName('Menu').active = true;
+            this.node.getChildByName('Thinking').active = false;
             this.node.children.forEach(child => child.emit(SHOW_MENU));
         });
 
@@ -66,7 +67,6 @@ export default class Canvas extends cc.Component {
         });
 
         this.node.on(FINISH_GAME_1, e => {
-            (window as any).gameHistory.push(FINISH_GAME_1);
             // Active Thinking
             this.node.getChildByName('Drawing').active = true;
             this.node.getChildByName('Thinking').active = false;
@@ -74,7 +74,6 @@ export default class Canvas extends cc.Component {
         });
 
         this.node.on(FINISH_GAME_2, e => {
-            (window as any).gameHistory.push(FINISH_GAME_2);
             // Active Thinking
             this.node.getChildByName('Drawing').active = true;
             this.node.getChildByName('Thinking').active = false;
@@ -82,7 +81,6 @@ export default class Canvas extends cc.Component {
         });
 
         this.node.on(FINISH_GAME_3, e => {
-            (window as any).gameHistory.push(FINISH_GAME_3);
             // Active Thinking
             this.node.getChildByName('Drawing').active = true;
             this.node.getChildByName('Thinking').active = false;
@@ -90,7 +88,6 @@ export default class Canvas extends cc.Component {
         });
 
         this.node.on(START_DRAWING, e => {
-            (window as any).gameHistory.push(START_DRAWING);
             // Active Popover
             this.node.getChildByName('Popover').active = true;
             this.node.children.forEach(child => child.emit(START_DRAWING, e));
