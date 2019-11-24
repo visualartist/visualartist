@@ -50,7 +50,7 @@ export default class Drawing extends Component {
         this.node.dispatchEvent(startDrawingAction);
         const file = new Blob([this.gcode], { type: 'text/plain' });
         const key = uuid();
-        axios.get('http://129.211.27.21:3000/qiniu/token').then(({ data }) => {
+        axios.get('http://180.76.143.193:3000/qiniu/token').then(({ data }) => {
             const { token } = data as any;
             qiniu.upload(file, key + '.gcode', token, {}, {}).subscribe({
                 next() {},
@@ -59,7 +59,7 @@ export default class Drawing extends Component {
                     const gcodeFileUrl = 'http://prjpdaj6a.bkt.clouddn.com/' + res.key;
                     axios.post('http://api.nprint.magicfirm.com:8006/api/jobs', {
                         gcodeFileUrl,
-                        deviceId: 'MFB19040009',
+                        deviceId: 'MFP1812030002',
                         name: key,
                         // imageUrl: 'http://pic15.nipic.com/20110616/5001675_165112690000_2.jpg',
                         filamentId: 'SP01'
